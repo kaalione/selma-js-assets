@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Scanner Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 200vh;
+            margin: 0;
+            background:
+                url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80")
+                center / cover
+                no-repeat
+                fixed;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Scanner</h1>
+    
+    <!-- Enable debug mode -->
+    <script>
+        window.selmaDebugLocal = true;
+    </script>
+    
+    <!-- Load the scanner -->
+    <script src="./enhanced-scanner-loader.min.js"></script>
+    
+    <!-- Show modal with mock data -->
+    <script>
+        // Test for the new early contact modal functionality
+        setTimeout(() => {
+            const tryShow = setInterval(() => {
+                if (window.ScannerUI && window.EnhancedScanner) {
+                    clearInterval(tryShow);
+                    console.log('✅ Modules ready! Testing early contact modal...');
+                    
+                    // Set up mock session (simulates that a scan has started)
+                    window.EnhancedScanner.session.domain = 'example.com';
+                    window.EnhancedScanner.session.reportLoaded = false; // Simulate that data is NOT ready yet
+                    window.EnhancedScanner.session.reportAnalyzed = false;
+                    
+                    // Show the new early contact modal
+                    window.ScannerUI.showEarlyContactModal(window.EnhancedScanner.session);
+                    console.log('✅ Early contact modal shown!');
+                    
+                    // Simulate data becoming ready after 10 seconds
+                    setTimeout(() => {
+                        console.log('📊 Simulating data loaded...');
+                        window.EnhancedScanner.session.reportLoaded = true;
+                        window.EnhancedScanner.session.reportAnalyzed = true;
+                    }, 10000);
+                }
+            }, 200);
+        }, 3000);
+    </script>
+</body>
+</html>
