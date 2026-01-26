@@ -53,11 +53,11 @@
         
         // FIX 1: Uppdatera config
         if (Scanner.config) {
-            Scanner.config.reportAnalysisDelay = 5000;
+            Scanner.config.contactModalDelay = 5000;
             Scanner.config.contactPopupTiming = "onReportAnalysis";
             Scanner.config.enableCTAOverlay = true;
             console.log('✅ Config updated:', {
-                reportAnalysisDelay: Scanner.config.reportAnalysisDelay,
+                contactModalDelay: Scanner.config.contactModalDelay,
                 contactPopupTiming: Scanner.config.contactPopupTiming,
                 enableCTAOverlay: Scanner.config.enableCTAOverlay
             });
