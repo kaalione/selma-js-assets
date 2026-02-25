@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Report → PDF</title>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f6f7f9;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 24px 28px;
+      border-radius: 12px;
+      width: 420px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 12px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    #loading {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #555;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Generate PDF report</h1>
+
+    <input
+      id="url"
+      placeholder="Paste report URL…"
+    />
+
+    <button onclick="run()">Generate PDF</button>
+
+    <div id="loading">⏳ Generating report…</div>
+  </div>
+
+  <script>
+    function run() {
+      const url = document.getElementById("url").value;
+      const loading = document.getElementById("loading");
+      loading.style.display = "block";
+  
+      // trigger PDF generation
+      fetch("http://localhost:3000/run?url=" + encodeURIComponent(url));
+  
+      const interval = setInterval(() => {
+        fetch("http://localhost:3000/status")
+          .then(r => r.json())
+          .then(({ ready }) => {
+            if (ready) {
+              window.open(
+                "http://localhost:3000/pdf/report.pdf",
+                "_blank"
+              );
+              loading.style.display = "none";
+              clearInterval(interval);
+            }
+          });
+      }, 500);
+    }
+  </script>
+</body>
+</html>
